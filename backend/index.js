@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 //utiles
 import connectDB from "./Config/db.js"
 import userRoutes from './routes/userRoutes.js'
+import categoryRoutes from './routes/categoryRoutes.js'
 
 dotenv.config();
 const port=process.env.PORT || 7000
@@ -19,6 +20,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 
 app.use("/api/users",userRoutes);
+app.use("/api/category",categoryRoutes); 
 
 app.listen(port,()=>{
    console.log("Server UP!!");
