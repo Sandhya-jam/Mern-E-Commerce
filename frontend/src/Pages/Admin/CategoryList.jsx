@@ -6,6 +6,7 @@ import {useCreateCategoryMutation,
   useUpdateCategoryMutation} from '../../Redux/api/CategoryApiSlice'
 import CategoryForm from "../../Components/CategoryForm";
 import Model from "../../Components/Model";
+import AdminMenu from "./AdminMenu";
 
 const CategoryList = () => {
     const {data:categories}=useFetchCategoriesQuery();
@@ -82,7 +83,7 @@ const CategoryList = () => {
         }
     }
   return <div className="ml-[10rem] flex flex-col md:flex-row"> 
-      {/* ADMIN MENU */}
+      <AdminMenu/>
       <div className="md:w-3/4 p-3">
         <div className="h-12 text-white">Manage Categories</div>
         <CategoryForm value={name} setValue={setName} handleSubmit={handleCreateCategory}/>
