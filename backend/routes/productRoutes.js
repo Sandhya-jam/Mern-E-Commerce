@@ -5,7 +5,7 @@ const router=express.Router();
 //Controllers
 import {addProduct,updateProductDetails,removeProduct,
 fetchProducts,fetchProductById,fetchAllProducts,addProductReviews,
-fetchTopProducts,fetchNewProducts} from '../Controllers/productController.js'
+fetchTopProducts,fetchNewProducts,filterProducts} from '../Controllers/productController.js'
 import { authenticate,authorizeAdmin } from "../Middlewares/authMiddleware.js";
 import checkId from "../Middlewares/checkId.js";
 
@@ -25,4 +25,6 @@ router.route('/:id')
 
 router.route('/:id/reviews')
         .post(authenticate,checkId,addProductReviews)
+
+router.route('/filtered-products').post(filterProducts)
 export default router;
