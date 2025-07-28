@@ -24,5 +24,5 @@ router.route('/:id')
         .delete(authenticate,authorizeAdmin,removeProduct)
 
 router.route('/:id/reviews')
-        .post(authenticate,addProductReviews)
+        .post(authenticate,checkId,addProductReviews)
 export default router;

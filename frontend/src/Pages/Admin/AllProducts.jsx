@@ -29,13 +29,15 @@ const AllProducts = () => {
                         to={`/admin/product/update/${product._id}`} className="block mb-4 overflow-hidden"
                         >
                         <div className="flex">
-                           <img src={product.image} alt={product.name} className="w-[10rem] object-cover" />
+                           <img 
+                             src={product.image}
+                            alt={product.name} className="w-[10rem] object-cover" />
                            <div className="p-4 flex flex-col justify-around">
                              <div className="flex justify-between">
                                 <h5 className="text-white text-xl font-semibold mb-2">
                                     {product?.name}
                                 </h5>
-
+                                {/* <p className="text-white">{product.image}</p> */}
                                 <p className="text-gray-400 text-sm">
                                     {moment(product.createAt).format("MMMM Do YYYY")}
                                 </p>

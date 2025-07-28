@@ -3,7 +3,7 @@ import Product from '../models/ProductModel.js'
 
 const addProduct=asyncHandler(async(req,res)=>{
     try {
-        const {name,description,price,category,quantity,brand,image}=req.fields
+        const {name,description,price,category,quantity,brand}=req.fields
         //Validation
         switch(true){
             case !name:
@@ -18,8 +18,6 @@ const addProduct=asyncHandler(async(req,res)=>{
                 return res.json({error:"quantity is required"})
             case !brand:
                 return res.json({error:"brand is required"})
-            case !image:
-                return res.json({error:"Image is required"})
         }
 
         const product=new Product({...req.fields})
@@ -34,7 +32,7 @@ const addProduct=asyncHandler(async(req,res)=>{
 
 const updateProductDetails=asyncHandler(async(req,res)=>{
     try {
-    const { name, description, price, category, quantity, brand } = req.fields;
+    const { name, description, price, category, quantity, brand,countInStock } = req.fields;
 
     // Validation
     switch (true) {
@@ -50,6 +48,8 @@ const updateProductDetails=asyncHandler(async(req,res)=>{
         return res.json({ error: "Category is required" });
       case !quantity:
         return res.json({ error: "Quantity is required" });
+      case !countInStock:
+        return res.json({ error: "count in Stock is required" });
     }
 
     const product = await Product.findByIdAndUpdate(
@@ -70,13 +70,10 @@ const updateProductDetails=asyncHandler(async(req,res)=>{
 const removeProduct=asyncHandler(async(req,res)=>{
     try {
         const product=await Product.findByIdAndDelete(req.params.id);
-        
-        if(!product) return res.status(404).json({error:"Product not found"})
-        
         res.json(product);
     } catch (error) {
         console.error(error);
-        res.status(400).json({error:"Failed to Delete Product"})
+        res.status(500).json({error:"Failed to Delete Product"})
     }
 })
 
@@ -100,18 +97,18 @@ const fetchProducts=asyncHandler(async(req,res)=>{
 const fetchProductById=asyncHandler(async(req,res)=>{
    try {
       const product=await Product.findById(req.params.id)
-
-      if(!product){
-        res.status(404)
-        throw new Error('Product Not found')
-      }
       
-      res.json(product)
+      if (product) {
+        return res.json(product);
+      } else {
+        res.status(404);
+        throw new Error("Product not found");
+    }
    } catch (error) {
       console.error(error)
-      res.status(400).json({error:"Server Error"})
+      res.status(404).json({error:"Server Error"})
    }
-})
+});
 
 const fetchAllProducts=asyncHandler(async(req,res)=>{
     try {

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { 
   useCreateProductMutation,
   useUploadProductImageMutation
@@ -18,38 +18,40 @@ const ProductList = () => {
     const [brand,setBrand]=useState('')
     const [quantity,setQuantity]=useState('')
     const [imageUrl,setImageUrl]=useState(null)
-    const [stock,setStock]=useState('')
+    const [stock,setStock]=useState(0)
+    const navigate=useNavigate();
 
     const [uploadProductImage]=useUploadProductImageMutation()
     const [createProduct]=useCreateProductMutation()
     const {data:categories}=useFetchCategoriesQuery()
     
-    const handleSubmit=async(e)=>{
-        e.preventDefault()
-        try {
-            const productData=new FormData()
-            productData.append('image',image)
-            productData.append('name',name)
-            productData.append('description',description)
-            productData.append('price',price)
-            productData.append('category',category)
-            productData.append('quantity',quantity)
-            productData.append('brand',brand)
-            productData.append('countInStock',stock)
+    const handleSubmit = async (e) => {
+  e.preventDefault();
 
-            const {data}=await createProduct(productData)
+  try {
+    const formData = new FormData();
+    formData.append('image',image);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("quantity", quantity);
+    formData.append("brand", brand);
+    formData.append("countInStock", stock);
 
-            if(data.error){
-                toast.error('Product create failed.Try Again')
-            }else{
-                toast.success(`${data.name} is created`)
-                navigate('/')
-            }
-        } catch (error) {
-            console.error(error)
-            toast.error("Product create failed.Try Again")
-        }
+    const {data}=await createProduct(formData)
+    if(data.error){
+      toast.error("Product create failed. Try again.");
+    }else{
+      toast.success("Product successfully created");
+      navigate("/");
     }
+  } catch (error) {
+    console.error(error);
+    toast.error("Product create failed. Try again.");
+  }
+};
+
     const uploadFilehandler=async(e)=>{
         const formData=new FormData()
         formData.append('image',e.target.files[0])
@@ -80,7 +82,7 @@ const ProductList = () => {
               <div className="mb-3">
                 <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
                     {image ? image.name:"Upload Image"}
-                    <input type="file" name='image' accept="image/" 
+                    <input type="file" name='image' accept="image/*" 
                     onChange={uploadFilehandler}
                     className={!image ? 'hidden':'text-white'}/>
                 </label>
