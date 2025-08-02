@@ -24,6 +24,13 @@ import Favorites from './Pages/Products/Favorites.jsx'
 import ProductDetails from './Pages/Products/ProductDetails.jsx'
 import Cart from './Pages/Cart.jsx'
 import Shop from './Pages/Shop.jsx'
+import Shipping from './Pages/Orders/Shipping.jsx'
+import PlaceOrder from './Pages/Orders/PlaceOrder.jsx'
+
+import {PayPalScriptProvider} from '@paypal/react-paypal-js'
+import Order from './Pages/Orders/Order.jsx'
+import UserOrder from './Pages/User/UserOrder.jsx'
+import OrderList from './Pages/Admin/OrderList.jsx'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
@@ -31,12 +38,16 @@ const router=createBrowserRouter(
     <Route path='/login' element={<Login/>}/>
     <Route path='/register' element={<Register/>}/>
     <Route index={true} path='/' element={<Home/>}/>
+    <Route path='/favorite' element={<Favorites/>}/>
+    <Route path='/product/:id' element={<ProductDetails/>}/>
+    <Route path='/cart' element={<Cart/>}/>
+    <Route path='/shop' element={<Shop/>}/>
+    <Route path='/users-orders' element={<UserOrder/>}/>
     <Route path='' element={<PrivateRoute/>} >
       <Route path='/profile' element={<Profile/>} />
-      <Route path='/favorite' element={<Favorites/>}/>
-      <Route path='/product/:id' element={<ProductDetails/>}/>
-      <Route path='/cart' element={<Cart/>}/>
-      <Route path='/shop' element={<Shop/>}/>
+      <Route path='/shipping' element={<Shipping/>}/>
+      <Route path='/placeorder' element={<PlaceOrder/>}/>
+      <Route path='/order/:id' element={<Order/>}/>
     </Route>
     
     {/* ADMIN ROUTES */}
@@ -45,6 +56,7 @@ const router=createBrowserRouter(
       <Route path="categorylist" element={<CategoryList/>}/>
       <Route path='productlist' element={<ProductList/>}/>
       <Route path='allproducts' element={<AllProducts/>}/>
+      <Route path='orderlist' element={<OrderList/>}/>
       <Route path='product/update/:_id' element={<ProductUpdate/>}/>
     </Route>
     </Route>
@@ -53,6 +65,8 @@ const router=createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
-      <RouterProvider router={router}/>
+      <PayPalScriptProvider>
+        <RouterProvider router={router}/>
+      </PayPalScriptProvider>
     </Provider>
 );

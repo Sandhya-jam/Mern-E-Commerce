@@ -8,7 +8,7 @@ const ProductCard = ({P}) => {
     const dispatch=useDispatch()
 
     const addToCartHandler=(product,qty)=>{
-        dispatch({...product,qty})
+        dispatch(addToCart({...product,qty}))
         toast.success('Item added successfully')
     }
   return (
